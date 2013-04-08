@@ -1,0 +1,14 @@
+#!/bin/bash
+module load intelcomp
+cd @CMAKE_BINARY_DIR@
+echo 'Serial:'
+./poisson $@
+echo 'Openmp:'
+OMP_NUM_THREADS=12
+./poisson_openmp $@
+echo 'Hybrid:'
+OMP_NUM_THREADS=3
+mpirun -npernode 4 ./poisson_hybrid $@
+echo 'MPI:'
+OMP_NUM_THREADS=1
+mpirun -npernode 12 ./poisson_mpi $@
